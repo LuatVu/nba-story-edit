@@ -1,0 +1,6 @@
+dur=1523.577324
+    I:         -19.5 LUFS
+    LRA:         4.1 LU
+    Peak:        0.0 dBFS
+silence_total=61.6976
+silence_n=108

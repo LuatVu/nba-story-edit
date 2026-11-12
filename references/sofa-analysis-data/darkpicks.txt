@@ -1,0 +1,12 @@
+haaland|490
+haaland|90
+haaland|360
+psg|40
+psg|60
+psg|1400
+ucl|140
+ucl|870
+ucl|1290
+zidane|90
+zidane|1660
+zidane|590
