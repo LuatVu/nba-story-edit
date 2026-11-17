@@ -63,6 +63,13 @@ Ghi nguồn + ngày truy xuất vào `facts.md` cạnh project.
   Tìm bằng `scripts/commons_search.py "<tên cầu thủ>"` (in kèm license + tác giả).
   Thêm `--by-only` để loại ảnh CC BY-**SA** nếu không muốn dính nghĩa vụ ShareAlike cho cả video.
   Đọc `references/sources.md` trước khi tải — có hai cái bẫy đã gặp thật.
+- **Ảnh/footage minh hoạ và thumbnail do AI tạo: dùng OpenAI** qua MCP server `openai-image`,
+  tool `generate_image`. Mặc định: `model: "gpt-image-2"`, `quality: "low"`, `size: "1024x1024"`
+  (hoặc `"1536x1024"` cho ngang 16:9, `"1024x1536"` cho dọc Shorts). Chỉ đổi sang `"medium"` hoặc
+  `"high"` khi user yêu cầu rõ hoặc khi là thumbnail cần chất lượng cao để lên hình cuối.
+  Ảnh lưu trong `D:\TuLieuLamNoiDung\images\`. Ghi prompt đã dùng vào `facts.md` cạnh project,
+  và ảnh AI tạo ra không thay thế được fact-check ở bước 2 (không dùng AI để tạo số liệu hay gương mặt
+  cầu thủ thật; dùng ảnh thật từ Wikimedia Commons cho cầu thủ).
 
 ### 4. Dựng trong Premiere
 Qua MCP server `premiere-pro`:
@@ -126,6 +133,22 @@ khoảng lặng 0.4–0.8s ở black frame giữa các chapter.
   góc khác, hoặc khung đã sắp xếp lại) hoặc dùng chart và thẻ chữ. Trước khi xuất, kiểm tra danh sách asset
   theo chapter và đánh dấu mọi lần lặp. Nếu không đủ asset khác nhau, hãy mở rộng tìm kiếm trước khi lặp lại.
   Một ảnh xuất hiện hai lần sẽ làm người xem chán.
+
+- **Nền đồ hoạ KHÔNG được là màu đen/đặc.** Mọi thẻ đồ hoạ (số liệu, honors, quote, timeline, chart, thẻ chữ)
+  phải dùng nền là **ảnh footage/ảnh cầu thủ phóng to, làm mờ (blur ~25–40 px) và tối đi (~35–50% sáng)**,
+  chọn ảnh liên quan đúng nội dung thẻ, có phủ gradient tối phía chữ để đọc rõ. Ví dụ chuẩn:
+  `gfx/tmp/chk_g00_honors.png` của dự án Marcus Smart. Không dùng ảnh đã dùng ở chỗ khác (xem quy tắc không lặp):
+  chọn khung khác hoặc crop khác. Chỉ chapter card và end card được dùng nền thiết kế riêng.
+  Áp dụng cả cho Shorts (nền 9:16 cũng là footage mờ, không đen).
+  Kiểm tra trước khi xuất: mở từng thẻ đồ hoạ, nếu thấy nền đen phẳng thì làm lại.
+
+- **Cảnh chỉ có ảnh tĩnh phải có chuyển động (Ken Burns), bắt buộc.** Không để ảnh đứng yên toàn màn hình.
+  Mỗi ảnh áp zoom-in hoặc zoom-out chậm liên tục suốt thời lượng (scale 100→112% hoặc 112→100%, ~3–5%/giây
+  tuỳ độ dài), kèm trôi nhẹ (pan 2–4% theo hướng đối diện với hướng nhìn của chủ thể). Luân phiên
+  zoom-in / zoom-out / pan giữa các ảnh liền kề để không đơn điệu. Làm bằng keyframe Scale+Position trong
+  Premiere (`set_clip_properties_batch` chỉ đặt giá trị tĩnh, nên bake bằng ffmpeg `zoompan` hoặc
+  `scale+crop` theo thời gian rồi import clip) và nhớ giữ ảnh ở chất lượng đủ để không vỡ khi zoom.
+  Kiểm tra trước khi xuất: xem preview từng cảnh ảnh, không được có cảnh nào đứng yên.
 
 - **Không burn-in phụ đề.** Khán giả Mỹ nghe tiếng Anh native. Bỏ track chữ đi sẽ thấy
   frame trống — lấp bằng chart, ảnh archival, chapter card, chứ không lấp bằng chữ.

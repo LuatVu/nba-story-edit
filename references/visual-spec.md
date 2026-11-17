@@ -188,3 +188,12 @@ và không quá 7 từ mỗi khối. Chỗ trống do bỏ phụ đề lấp b�
 ### Giọng narration
 SOFA Zone nghiêng kịch tính. Khán giả NBA Mỹ dị ứng giọng "documentary thổi phồng" khi
 số liệu không đỡ nổi. Giữ nhịp dồn của SOFA, hạ tính từ xuống, để con số làm phần kịch tính.
+
+## Logo kênh Turn On Hoops (đã lưu)
+- File: `../assets/channel_logo_turn_on_hoops.png` (800×800 RGBA, nền trong suốt, bóng rổ vàng + chữ "TURN ON HOOPS").
+- Dùng cho end card (kích thước ~260 px, đặt phía trên tên kênh) và bumper giữa video (opacity 15–20%).
+- Bảng màu logo: vàng ~#FFC11F, xanh navy ~#0B1B3A, chữ trắng viền navy. Đồng bộ với accent của kênh nếu cần.
+
+## Hai quy tắc bắt buộc bổ sung (xem SKILL.md "Quy tắc cứng")
+1. **Nền đồ hoạ = footage/ảnh mờ + tối**, không bao giờ đen phẳng. Công thức ffmpeg: `scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,gblur=sigma=30,eq=brightness=-0.25:saturation=0.8`, rồi phủ gradient tối phía có chữ.
+2. **Ảnh tĩnh luôn có Ken Burns**: zoom 100→112% (hoặc ngược lại) + pan nhẹ, luân phiên hướng giữa các ảnh. Ví dụ ffmpeg: `zoompan=z='min(zoom+0.0008,1.12)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=<frames>:s=1920x1080:fps=30000/1001` (ảnh nguồn nên upscale 2x trước để zoom không giật).
