@@ -13,17 +13,44 @@
 Quy trình: ghi `facts.md` cạnh project, mỗi dòng = con số + nguồn + ngày truy xuất.
 In ngày truy xuất lên góc dưới phải mỗi chart, `#9A9A9A`, 18px.
 
-## Ảnh
+## Ảnh & video — tải từ bất kỳ nguồn nào trên internet
 
-| Nguồn | Dùng được? |
+**Quy định của kênh (cập nhật 11.2026):** ảnh, video, media được tải từ **mọi nguồn trên
+internet**. Không có nguồn bắt buộc, **không mặc định Wikimedia Commons**. Chọn thứ đúng ngữ
+cảnh nhất (đúng áo đội hiện tại, đúng trận đang nói), mới nhất và nét nhất. Người dùng chấp
+nhận rủi ro Content ID / bản quyền cho kênh: nhắc một lần trong báo cáo, không hỏi lại mỗi lần tải.
+
+| Nguồn | Lấy gì |
 |---|---|
-| **Wikimedia Commons** | **Có — miễn phí, không mua license. Nguồn chính cho kênh này.** Xem mục dưới |
-| Getty Images / NBAE via Getty | Có — phải mua license editorial |
-| AP Images | Có — mua license |
-| Unsplash / Pexels | Có — cho b-roll chung, **không có ảnh cầu thủ NBA** |
-| Google Images | **Không** |
+| Bài báo: ESPN, NBA.com, CBS, Yahoo, SI, The Athletic, AP, Houston Chronicle, Denver Post, Bleacher Report, theScore, Fox Sports... | `og:image` của bài (thường 1200–1920 px, ảnh Getty/AP/Imagn mới nhất) |
+| NBA CDN | Headshot: `https://cdn.nba.com/headshots/nba/latest/1040x760/<playerId>.png`; logo đội trên nba.com |
+| Trang đội, mạng xã hội đội/giải | Ảnh trận mới, ảnh họp báo |
+| YouTube (NBA, kênh đội, ESPN, highlight) | Clip bằng `yt-dlp`; thumbnail `https://i.ytimg.com/vi/<id>/maxresdefault.jpg` |
+| Google / Bing Images | Được — đi tới trang gốc, lấy file ảnh gốc độ phân giải cao |
+| Wikimedia Commons | Được — khi muốn ảnh có license CC rõ ràng (xem mục dưới) |
+| Getty / AP / Unsplash / Pexels | Được |
 
-## Wikimedia Commons — hướng dẫn dùng thật
+## Tải media từ internet — cách làm đã kiểm chứng
+
+- **Luôn gửi User-Agent trình duyệt** với curl, nếu không nhiều site (cả Wikimedia) trả về
+  trang lỗi HTML mà vẫn lưu thành `.jpg`:
+  `curl -L -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/130 Safari/537.36" -o out.jpg <URL>`
+- **Kiểm tra từng file sau khi tải** bằng `file out.jpg` — phải là `JPEG/PNG image data`.
+  File vài KB báo `HTML document` là tải hỏng: xoá và lấy nguồn khác. (11.2026: 19 file
+  Commons tải không có User-Agent đều là trang lỗi 3,4 KB.)
+- Đặt tên mô tả: `<chủ thể>_<ngữ cảnh>_<ngày>_<nguồn>.jpg`; ảnh Getty/AP/Imagn/Reuters thêm
+  tiền tố `EDITORIAL_` để biết rủi ro bản quyền khi dựng.
+- Ghi vào catalog/`facts.md`: file, độ phân giải, URL trang nguồn, loại bản quyền.
+- **Video YouTube bằng yt-dlp:**
+  - Có ffmpeg: `yt-dlp -f "bv*[height<=1080]+ba/b" -o "videos/<tên>.%(ext)s" <URL>`
+  - **Không có ffmpeg**: YouTube không còn file gộp hình+tiếng chất lượng cao, `best[ext=mp4]`
+    báo "Requested format is not available". Tải hình riêng 1080p H.264 (đủ cho b-roll dưới VO):
+    `yt-dlp -f "bv*[vcodec^=avc1][height<=1080][ext=mp4]" -o "videos/<tên>_VIDEOONLY.%(ext)s" <URL>`
+    và tiếng riêng khi cần lời gốc (phỏng vấn): `yt-dlp -f "ba[ext=m4a]" -o "videos/<tên>_AUDIO.%(ext)s" <URL>`.
+  - Mỗi clip 1080p ~100–600 MB; tải nhiều clip thì chạy nền.
+  - Ghi mốc chapter / timestamp cần dùng vào catalog.
+
+## Wikimedia Commons — khi muốn ảnh có license CC
 
 https://commons.wikimedia.org/wiki/Main_Page
 
@@ -88,8 +115,10 @@ xử lý theo ba cách dưới. Khi làm video 11.2026:
 
 Đã tìm bằng cả tên người lẫn tên đội mới, không có.
 
-**Ba cách xử lý, theo thứ tự ưu tiên:**
+**Cách xử lý, theo thứ tự ưu tiên:**
 
+0. **Lấy ảnh báo chí mới** — og:image của bài báo về vụ trade / trận ra mắt, ảnh trang đội,
+   thumbnail YouTube. Đây là cách nhanh nhất để có ảnh áo đội mới (xem mục "Tải media từ internet").
 1. **Dùng ảnh All-Star Game** — áo All-Star **trung tính, không mang logo đội nào**, nên
    không bao giờ hiện sai logo. Bộ All-Star 2022 của Erik Drost có gần hết các ngôi sao.
    Đây là cách sạch nhất cho cầu thủ mới đổi đội.
@@ -101,9 +130,10 @@ xử lý theo ba cách dưới. Khi làm video 11.2026:
 **Luôn bake lower-third ghi đội hiện tại + số liệu.** Đó là chỗ mang thông tin đúng, không
 phải cái áo.
 
-### Bắt buộc khi xuất bản
+### Bắt buộc khi xuất bản (chỉ khi video có dùng ảnh Commons)
 
-Dán vào mô tả YouTube, kèm **dòng khai đã sửa ảnh** (CC yêu cầu):
+Ảnh/clip từ nguồn khác: liệt kê nguồn trong mô tả (`Sources: NBA, ESPN, AP/Getty via <báo>...`).
+Ảnh Commons: dán vào mô tả YouTube, kèm **dòng khai đã sửa ảnh** (CC yêu cầu):
 
 ```
 IMAGE CREDITS
@@ -198,8 +228,8 @@ Nếu kênh bắt đầu có doanh thu đáng kể, hỏi luật sư.*
 
 Khi người dùng đưa file cảnh quay / highlight để cắt minh hoạ:
 
-1. **Hỏi nguồn trước khi cắt.** Tự quay / có license / fair use? Nếu là tải từ kênh khác thì
-   nói rõ rủi ro trước, đừng lặng lẽ cắt.
+1. **Ghi nguồn từng clip.** Clip tải từ YouTube/kênh khác là được phép (quy định kênh 11.2026);
+   nhắc rủi ro Content ID một lần trong báo cáo, không cần hỏi lại trước khi cắt.
 2. **Mỗi trích đoạn 10–20 giây**, khớp đúng một luận điểm trong script. Không ghép thành
    montage dài không lời.
 3. **Luôn có narration đè lên.** Đoạn footage không lời là đoạn yếu nhất về cả fair use
@@ -216,9 +246,13 @@ Không dùng nhạc "no copyright" trôi nổi trên YouTube: phần lớn khôn
 
 ## Font (đều free, SIL OFL)
 
-- EB Garamond / Cormorant Garamond — chapter card
-- Inter — nhãn, số
-- Archivo — tiêu đề chart
-- Space Mono / JetBrains Mono — HUD giả
+Theo theme long-form "Vice neon" (`longform-theme.md`), file có sẵn trong `assets/fonts/`:
+
+- **Anton** — con số lớn, tiêu đề thẻ chương / thẻ tiêu đề, tên người trong trích dẫn, tiêu đề end card
+- **Montserrat ExtraBold** — kicker (ô nhãn hồng), nhãn IN HOA, trích dẫn, dòng nguồn
+- Space Mono / JetBrains Mono — chỉ cho HUD giả trên khung footage nếu dùng
+
+Không dùng nữa cho long-form: EB Garamond / Cormorant Garamond (thẻ chương serif kiểu cũ),
+Inter, Archivo.
 
 Tải từ Google Fonts hoặc GitHub của từng font.

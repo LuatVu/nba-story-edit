@@ -83,18 +83,23 @@ Dùng tối đa 2 lần/video, cho khoảnh khắc lớn nhất.
 
 ---
 
-## Chapter card
+## Chapter card (theme "Vice neon", xem `longform-theme.md` mục 7)
 
-1. **Color Matte** đen, dài 2.6s.
-2. `assets/grain.mp4` lên trên, blend Overlay, Opacity 12%.
-3. **Essential Graphics → Text**: EB Garamond Italic, 68px, trắng,
-   Position x=290 y=500 (khung 1920×1080), canh trái.
-4. Hiệu ứng máy đánh chữ: áp **Linear Wipe** lên layer text,
-   Wipe Angle 270°, keyframe Transition Complete 100 → 0 trong (số ký tự ÷ 22) giây, Feather 0.
-5. Giữ 1.2s sau khi chữ xong.
-6. Cắt sang footage bằng cut thẳng, không dissolve.
+Không dựng bằng Essential Graphics trong Premiere. Render PNG bằng script rồi import:
 
-**Black frame 0.4–0.8s trước mỗi chapter card.** Đây là nhịp thở, không phải lỗi.
+1. Nền: ảnh full khung riêng cho từng chương (ảnh AI kiểu poster minh hoạ sinh bằng `openai-image`
+   `1536x1024`, hoặc ảnh thật). Không dùng lại ảnh nền giữa các chương.
+2. `python scripts/lf_theme.py --card "CHAPTER 3" "THE\nTEST RUNS" bg.png card_03.png`
+   → gradient tối `#080414` bên trái, khối hồng `#FF40A0` "CHAPTER N" (Montserrat ExtraBold 46 px),
+   tiêu đề Anton 170 px trắng viền đen 10 px + lớp xanh ngọc `#28E1D7` lệch +8 px.
+   Thẻ mở video: `--title "HOW GTA 6\nTOOK OVER\nTHE NBA" bg.png card_00.png` (190 px, không kicker).
+3. Import PNG, dài **2,5–3,5 s**. Nếu muốn chuyển động, bake push-in nhẹ 100→104 % bằng ffmpeg
+   (`zoompan`) rồi import MP4, không keyframe Scale trong Premiere.
+4. **Thẻ phải hiện đủ ngay frame đầu** (không typewriter, không trượt vào): YouTube lấy frame đầu
+   chương làm ảnh xem trước của chương.
+5. SFX whoosh đặt sớm ~0,35 s trước thẻ. Cắt sang footage bằng cut thẳng.
+
+**Black frame 0.15–0.25 s trước mỗi chapter card** (số đo đã sửa trong `edit-grammar.md`).
 
 ---
 
@@ -113,10 +118,12 @@ Chart đã animate sẵn (`--video`) thì import như clip thường, không c�
 ## Tactical board (bóng rổ)
 
 Premiere không dựng được sơ đồ động phức tạp. Cách làm:
-1. Nền nửa sân (PNG 1920×1080, nền đen, đường kẻ `#2A2A2A`) — tự vẽ một lần rồi tái dùng.
+1. Nền nửa sân (PNG 1920×1080, nền `#0A090E` có lưới `#16141E` như khung footage, đường kẻ sân
+   `#2A2A2A`) — tự vẽ một lần rồi tái dùng.
 2. Mỗi cầu thủ = một **Ellipse shape** trong Essential Graphics, fill bằng ảnh cầu thủ
    (Appearance → Fill → Image), viền 3px.
-3. Chấm `#E8912A` cho nhân vật chính, `#FFFFFF` cho đồng đội, `#555555` cho đối thủ.
+3. Viền hồng `#FF40A0` cho nhân vật chính, xanh ngọc `#28E1D7` cho đồng đội, trắng cho đối thủ
+   (theme; trước đây `#E8912A` / trắng / `#555555`).
 4. Di chuyển = keyframe Position của từng shape. Mũi tên = Pen tool + Linear Wipe.
 
 Nếu cần nhiều hơn 8 object chuyển động → làm ở After Effects, xuất `.mogrt`, import vào Premiere.
@@ -156,6 +163,9 @@ Premiere làm được cả 4 loại mà không cần After Effects:
 
 ## Chart reveal — bake bằng ffmpeg, đừng keyframe trong Premiere
 
+**Mặc định: dùng `scripts/lf_theme.py`** (8 mẫu đồ hoạ đã animate sẵn theo theme, xuất MP4) rồi import
+như clip thường. Cách `drawbox` dưới đây chỉ dùng khi phải reveal một PNG chart dựng ngoài theme.
+
 Keyframe qua API của Premiere không đáng tin cho ảnh tĩnh (xem "Bẫy đã gặp" cuối file).
 Cách chắc ăn: che vùng bằng `drawbox` rồi gỡ che đúng mốc, render ra MP4, import như clip thường.
 
@@ -168,21 +178,12 @@ format=yuv420p" \
   -t 19.9 -r 30000/1001 -c:v libx264 -preset medium -crf 14 chart_anim.mp4
 ```
 
-Lấy toạ độ vùng bằng cách dò dải màu accent trong PNG (numpy: tìm hàng pixel có màu `#E8912A`).
+Lấy toạ độ vùng bằng cách dò dải màu accent trong PNG (numpy: tìm hàng pixel có màu hồng `#FF40A0`).
 
-### Typewriter cho chapter card — cũng bake
+### Chapter card — không typewriter
 
-Quét **đúng bề ngang của chữ**, không quét cả khung. Chữ thường chỉ chiếm 40–55% chiều ngang;
-quét cả khung thì chữ hiện xong ở 40% thời gian, phần còn lại vệt quét chạy trên nền đen trống.
-
-```bash
-# x0,x1 = mép trái/phải của chữ (đo từ PNG); D = số ký tự ÷ 22
-ffmpeg -y -f lavfi -i color=black:s=1920x1080:r=30000/1001:d=2.7 \
-       -loop 1 -i card.png \
-       -f lavfi -i color=black:s=1920x1080:r=30000/1001:d=2.7 \
-  -filter_complex "[0:v][1:v]overlay=0:0[b];[b][2:v]overlay=x='X0+(X1-X0)*min(1,t/D)':y=0:shortest=1,format=yuv420p" \
-  -t 2.7 -c:v libx264 -crf 14 card_anim.mp4
-```
+Kiểu cũ (nền đen, chữ serif nghiêng hiện kiểu máy đánh chữ bằng wipe) đã bỏ từ 23/11/2026.
+Thẻ chương theo theme hiện đủ ngay frame đầu; xem mục "Chapter card" ở trên.
 
 ## Grain phủ toàn video
 
@@ -196,15 +197,17 @@ ffmpeg -y -stream_loop 100 -i assets/grain.mp4 -t 480 \
 
 Đặt lên track trên cùng, **Blend Mode Overlay** (trong Premiere là enum, `13`), **Opacity 8%**.
 
-⚠️ **Grain phải tránh mọi vùng mà track dưới trong suốt** — black frame, và chapter card đang
-bị wipe. Ở đó không có gì để blend nên grain hiện thành **mảng xám** giữa khung. Cắt grain
+⚠️ **Grain phải tránh mọi vùng mà track dưới trong suốt** — black frame và mọi khoảng trống
+trên timeline. Ở đó không có gì để blend nên grain hiện thành **mảng xám** giữa khung. Cắt grain
 thành nhiều đoạn, chừa các khoảng đó ra. Overlay vốn không tác động lên đen tuyệt đối nên
 chừa ra cũng không mất gì.
 
 ## End card
 
-6 giây cuối. Nền phẳng một màu (xem `visual-spec.md` cho bảng màu Turn On Hoops), logo kênh
-hình tròn, chữ display lớn, một dòng CTA chữ thường ở đáy. Không đọc CTA bằng lời.
+Theo theme: `lf_theme.end_card(bg, out, headline=..., right=...)` → ảnh mờ tối, câu hỏi Anton
+84 px bóng xanh ngọc, dòng "TELL ME IN THE COMMENTS", hai ô video 760×428 viền hồng cho end screen,
+vòng Subscribe viền xanh ngọc. Giữ đủ lâu cho end screen của YouTube (5–20 s), đặt các phần tử
+end screen trong Studio trùng các ô. Không đọc CTA bằng lời.
 
 ## Bẫy đã gặp — đọc trước khi debug
 

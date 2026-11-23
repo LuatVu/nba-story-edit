@@ -37,7 +37,8 @@ Chapter map thật của video 19:31, kèm thời lượng tính ra:
 
 ## Nhịp trong chapter
 
-- Mở chapter: black frame → chapter card (typewriter) → vào footage.
+- Mở chapter: black frame → chapter card (kiểu poster của theme, hiện đủ ngay frame đầu, có whoosh)
+  → vào footage. Kiểu typewriter của SOFA Zone đã bỏ (xem `longform-theme.md` mục 7).
   ⚠️ **ĐÃ SỬA, xác nhận trên 5 video:** black frame **luôn rất ngắn, 0.08–0.30 s**, không bao
   giờ 0.4–0.8 s. Số lần thì tuỳ video (4 đến 29 lần). Dùng 0.15–0.25 s.
 - Trong chapter: shot trung bình ngắn, cắt theo câu narration, không theo nhịp nhạc.
@@ -55,10 +56,12 @@ Chapter map thật của video 19:31, kèm thời lượng tính ra:
 2. **CRT archive** — tư liệu cũ bo góc mạnh kiểu màn hình lồi, scanline, nhiễu màu, vignette nặng.
 3. **Cinema plate** — footage chiếu trên màn hình trong rạp chiếu phim trống.
    Dùng tiết chế: 1–2 lần/video, cho khoảnh khắc lớn nhất.
-4. **Tactical board** — sơ đồ sân nền đen, chấm tròn có ảnh cầu thủ bên trong, chấm vàng
-   đánh dấu nhân vật chính. Sang NBA = sơ đồ nửa sân, half-court set.
-5. **Chapter card** — nền đen + grain, chữ serif nghiêng trắng, canh trái ~15% chiều ngang,
-   ~45% chiều cao, hiện kiểu máy đánh chữ.
+4. **Tactical board** — sơ đồ sân nền tối, chấm tròn có ảnh cầu thủ bên trong, viền hồng
+   `#FF40A0` đánh dấu nhân vật chính (theme). Sang NBA = sơ đồ nửa sân, half-court set.
+5. **Chapter card** — SOFA Zone dùng nền đen + grain, chữ serif nghiêng trắng, hiện kiểu máy đánh chữ.
+   **Kênh mình không dùng kiểu này nữa** (từ 23/11/2026): thẻ chương theo theme "Vice neon" là ảnh
+   full khung + gradient tối bên trái + khối hồng "CHAPTER N" + tiêu đề Anton kiểu poster GTA
+   (`lf_theme.chapter_card()`, `longform-theme.md` mục 7).
 6. **Chart scroll** — biểu đồ dựng dọc rất dài, camera trôi xuống chậm thay vì cắt từng phần.
 
 ## Những thứ KHÔNG mang sang

@@ -1,3 +1,8 @@
+> **Màu, chữ, thẻ chương, đồ hoạ số liệu và end card của long-form theo `longform-theme.md`
+> (theme "Vice neon" hồng `#FF40A0` × xanh ngọc `#28E1D7`, từ 23/11/2026).** File này giữ phần đo
+> SOFA Zone (khung footage, bumper, mở đầu, telestration, cấu trúc end card, US adaptation).
+> Chỗ nào bên dưới nói về màu/kiểu chữ khác theme, theme thắng.
+
 ## Khung hình chủ đạo — footage KHÔNG full-bleed
 
 Đo 4 video (685 mẫu, 1 khung/10 s): **footage sân cỏ chỉ chiếm 27% thời lượng**
@@ -65,6 +70,10 @@ Ngoài kiểu nền đen + serif nghiêng đã ghi, còn một kiểu nữa đo 
 
 Dùng kiểu nền ảnh cho chapter có nhân vật cụ thể; kiểu nền đen cho chapter về khái niệm/số liệu.
 
+**Thay bằng theme (23/11/2026):** kênh dùng một kiểu thẻ chương duy nhất: ảnh full khung + gradient tối
+bên trái + khối hồng "CHAPTER N" + tiêu đề Anton kiểu poster (trắng, viền đen, lớp xanh ngọc lệch).
+Xem `longform-theme.md` mục 7, `lf_theme.chapter_card()`.
+
 ## Telestration — thủ pháp chủ đạo, đo từ `dGlI0rts0AI`
 
 Đây là mảng lớn nhất mà tài liệu cũ bỏ sót. Trong video Pep Guardiola, **telestration xuất
@@ -92,7 +101,7 @@ thuật. Rẻ mà hiệu quả — nối người với sơ đồ trong cùng m�
 |---|---|
 | Vùng tô khoảng trống giữa tuyến | Tô vùng paint / corner three bị bỏ trống |
 | Mũi tên đường chuyền | Đường chuyền, đường cắt, hướng drive |
-| Vòng chân cầu thủ | Vòng chân, `#E8912A` cho nhân vật chính, trắng cho đồng đội, `#555555` cho đối thủ |
+| Vòng chân cầu thủ | Vòng chân, hồng `#FF40A0` cho nhân vật chính, xanh ngọc `#28E1D7` cho đồng đội, trắng cho đối thủ (theme; trước đây `#E8912A`) |
 | Bảng chiến thuật cả sân | Sơ đồ **nửa sân**, half-court set |
 
 ⚠️ Telestration vẽ đè lên footage NBA **vẫn là footage NBA** — rủi ro Content ID không giảm.
@@ -137,8 +146,12 @@ không mang sang Mỹ**. Lấy kiểu A.
 
 ### Khuyến nghị cho Turn On Hoops
 
+**Theo theme (23/11/2026):** end card = ảnh mờ tối + câu hỏi Anton bóng xanh ngọc + hai ô video viền
+hồng + vòng Subscribe xanh ngọc (`lf_theme.end_card()`). Logo kênh đặt nhỏ nếu cần, không đổi nền sang vàng.
+Hai phương án cũ dưới đây chỉ để tham khảo.
+
 Giữ cấu trúc "thương hiệu chỉ ở cuối", nhưng **đổi bảng màu**: logo Turn On Hoops là
-vàng `#FFC629` trên navy. Dùng vàng làm nền end card sẽ chói và phá hệ màu đen/cam của chart.
+vàng `#FFC629` trên navy. Dùng vàng làm nền end card sẽ chói và phá hệ màu của chart.
 Hai cách an toàn hơn:
 
 1. **Nền đen, logo lớn giữa khung, chữ trắng** — liền mạch với chapter card, an toàn nhất

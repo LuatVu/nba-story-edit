@@ -73,6 +73,9 @@ def filepath(name, width=2400):
 
 
 def main():
+    # Windows console is cp1252: Vietnamese text in the output would crash print()
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     ap = argparse.ArgumentParser(description="Tìm ảnh Wikimedia Commons kèm license")
     ap.add_argument("queries", nargs="+")
     ap.add_argument("--limit", type=int, default=25, help="số kết quả mỗi từ khoá")

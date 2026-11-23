@@ -15,14 +15,17 @@ Cần: pip install matplotlib        (video cần thêm ffmpeg trong PATH)
 """
 import argparse, csv, os, sys
 
-BG      = "#000000"
+# Colours/fonts follow the long-form "Vice neon" theme (references/longform-theme.md).
+# For animated data graphics prefer scripts/lf_theme.py; this script is for tall scroll charts.
+BG      = "#0A090E"
 FG      = "#FFFFFF"
-MUTED   = "#9A9A9A"
-GRID    = "#2A2A2A"
-ACCENT  = "#E8912A"
+MUTED   = "#AAA4B4"
+GRID    = "#16141E"
+ACCENT  = "#FF40A0"
 
-TITLE_FONTS = ["Archivo", "Inter", "Helvetica Neue", "DejaVu Sans"]
-BODY_FONTS  = ["Inter", "Helvetica Neue", "DejaVu Sans"]
+FONT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets", "fonts")
+TITLE_FONTS = ["Anton", "Archivo", "Inter", "Helvetica Neue", "DejaVu Sans"]
+BODY_FONTS  = ["Montserrat", "Inter", "Helvetica Neue", "DejaVu Sans"]
 
 
 def load(path):
@@ -116,6 +119,11 @@ def main():
         import matplotlib
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
+        from matplotlib import font_manager
+        for fn in ("Anton-Regular.ttf", "Montserrat-ExtraBold.ttf"):
+            fp = os.path.join(FONT_DIR, fn)
+            if os.path.exists(fp):
+                font_manager.fontManager.addfont(fp)
     except ImportError:
         sys.exit("Thiếu matplotlib.  Chạy:  pip install matplotlib")
 
