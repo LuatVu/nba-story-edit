@@ -1,7 +1,10 @@
 ---
 name: nba-story-edit
-description: Edit long-form NBA documentary, biography, behind-the-scenes and salary-cap videos in Adobe Premiere Pro, using the cinematic style measured from the SOFA Zone channel and adapted for a US audience, in the channel's standard "Vice neon" long-form theme (pink #FF40A0 × teal #28E1D7, Anton/Montserrat, 8 animated data-graphic templates, GTA-poster chapter cards), and make 9:16 NBA YouTube Shorts (trade rumors, news, story clips) in a fast news-short style with word-by-word auto captions, player cutout reveal animations, speed-ramped slow motion and team-colour cover thumbnails. Use for scripting chapter structure, cutting, footage look treatment, chapter cards, animated data charts, and for any NBA Short, Reel or vertical video and its cover.
+description: Edit long-form NBA documentary, biography, behind-the-scenes and salary-cap videos in Adobe Premiere Pro, using the cinematic style measured from the SOFA Zone channel and adapted for a US audience, in the channel's standard "Vice neon" long-form theme (pink #FF40A0 × teal #28E1D7, Anton/Montserrat, 8 animated data-graphic templates, GTA-poster chapter cards), and make 9:16 NBA YouTube Shorts (trade rumors, news, story clips) in a fast news-short style with word-by-word auto captions, player cutout reveal animations, speed-ramped slow motion and team-colour cover thumbnails. Use for scripting chapter structure, cutting, footage look treatment, chapter cards, animated data charts, and for any NBA Short, Reel or vertical video and its cover. Also makes and publishes Facebook photo posts for the Turn On Hoops page: hot NBA news turned into one branded meme image (troll-page humor modelled on Troll Bóng Đá, English captions), with a searchable library of 1,897 imgflip meme templates sorted by meaning (used unedited, no face swaps), an ESPN hot-topic radar, and posting/scheduling through the Facebook MCP. Use for any NBA meme, troll post, Facebook post, photo post or "chế ảnh".
 ---
+
+> **Làm bài đăng Facebook / meme / chế ảnh cho trang Turn On Hoops?** Đi thẳng tới mục
+> **"Facebook meme posts"** ở cuối file và đọc `references/facebook-post.md`. Không áp dụng quy tắc video.
 
 > **Làm Shorts (9:16, < 3 phút)?** Đi thẳng tới mục **"Shorts"** ở cuối file. Phần lớn quy tắc
 > long-form bên dưới (không phụ đề, footage lồng khung, giữ shot lâu) **không áp dụng** cho Shorts.
@@ -265,6 +268,28 @@ ffmpeg lấy từ PATH hoặc `imageio_ffmpeg`. Font đã có trong `assets/font
 variable; `Anton-Regular.ttf`); thiếu thì script tự dùng Segoe UI Black / Impact.
 Bản chạy thử đầy đủ (VO 6 s, nhóm 3 người, caption, cover): `D:\TuLieuLamNoiDung\media\_shorts_test\`.
 
+## Facebook meme posts
+
+Bài ảnh cho trang **Turn On Hoops** (fb.com/turnonhoops). Mỗi bài là 1 ảnh 1200×1200, tin NBA nóng kèm cú lật hài hước,
+tiếng Anh, giọng mỉa mai tỉnh bơ học từ Troll Bóng Đá.
+**Đọc `references/facebook-post.md` trước.** File này gồm 6 nguyên tắc hài, 10 công thức có số reaction,
+cách chọn tin nóng, thư viện meme, giới hạn, quy trình và checklist.
+
+Tóm tắt:
+- **Tin phải nóng (< 24 giờ) và có tên tuổi.** Chạy `scripts/nba_hot_topics.py`, dùng WebSearch, xem r/nba qua trình duyệt, rồi chấm điểm.
+  **Xác nhận đội hình hôm nay**: mùa 2026-27 nhiều sao đã đổi đội, đừng tin trí nhớ.
+- **Sự thật trước, cú lật sau.** Tầng 1 là tin/chỉ số có nguồn, tầng 2 là câu đá xoáy.
+  Ảnh thật là chính, meme là gia vị.
+- **Thư viện meme** nằm trong skill: `assets/memes/` (1.897 template imgflip đã nén, 103 MB,
+  64 nhóm nghĩa). Tìm bằng prompt:
+  `python scripts/meme_search.py "<ý muốn, tiếng Việt hoặc Anh>" --sheet pick.jpg`.
+  **Meme giữ nguyên ảnh gốc, không ghép mặt cầu thủ**; ai là ai thì ghi bằng nhãn chữ.
+- **Dựng ảnh**: `scripts/fb_post.py spec.json post.jpg`, với 7 layout. Khung vàng, logo góc trên phải,
+  footer FB + YouTube đã có sẵn trong script.
+- **Caption 2–8 từ**, không link. Lời thoại đùa phải đóng khung "PROBABLY:". Đá xoáy màn trình diễn, không đá xoáy con người.
+- **Đăng**: `mcp__facebook__post_photos(alias="turn_on_hoops", …)`, **chỉ sau khi người dùng duyệt ảnh + caption**.
+  Có thể đặt lịch theo giờ vàng ET.
+
 ## Index reference
 
 | File | Nội dung |
@@ -288,5 +313,11 @@ Bản chạy thử đầy đủ (VO 6 s, nhóm 3 người, caption, cover): `D:\
 | `scripts/make_chart.py` | Sinh biểu đồ động từ CSV |
 | `scripts/make_overlays.sh` | Sinh scanline / grain / vignette bằng ffmpeg |
 | `scripts/commons_search.py` | Tìm ảnh Wikimedia Commons, in kèm license + tác giả |
+| `references/facebook-post.md` | **Facebook meme posts**: văn phong Troll Bóng Đá → NBA, 10 công thức, chọn tin nóng, thư viện meme, giới hạn, quy trình đăng |
+| `scripts/fb_post.py` | Render ảnh bài Facebook 1200×1200 (7 layout, chữ vàng/trắng, logo, footer FB/YT, nhãn trên meme) |
+| `assets/memes/` | 1.897 meme imgflip đã nén (`templates/`) + `meme_index.json` (nhóm nghĩa) + `catalog_raw.json` |
+| `scripts/meme_search.py` | Tìm meme theo nghĩa từ prompt Việt/Anh, xuất contact sheet |
+| `scripts/meme_build_index.py`, `meme_semantics.py`, `meme_extra_tags*.py` | Nhóm nghĩa, nhãn tay, danh sách nhạy cảm → dựng lại `meme_index.json` |
+| `scripts/nba_hot_topics.py` | Radar tin nóng NBA từ ESPN (tỉ số, top scorer, tin mới, chấm điểm độ nóng) |
 | `scripts/music_analyze.py` | Dò nhạc nền (có/vắng, điểm đổi bản) trong bản mix có cả lời |
 | `scripts/duck_analyze.py` | Đo cân bằng giọng/nhạc và độ nâng nhạc ở khoảng lặng |
